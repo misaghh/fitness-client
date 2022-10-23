@@ -11,11 +11,16 @@ function UserProfile({name}) {
     const [selectedOption, setSelectedOption] = useState("workout");
     const [workoutData, setWorkoutData] = useState([]);
     const [recipeData, setRecipeData] = useState([]);
-    const [activeView, setActiveView] = useState([]);
+    const [activeWorkout, setActiveWorkout] = useState(null);
+    const [activeRecipe, setActiveRecipe] = useState(null);
 
     const handleLogOut = () => {
         localStorage.removeItem('username');
         window.location.href = 'http://localhost:1234/'
+    }
+
+    const handleSearchWorkouts = (type) => {
+        window.location.href = `http://localhost:1234/search/${type}`;
     }
 
     useEffect(async () => {
@@ -29,20 +34,12 @@ function UserProfile({name}) {
 
         const data = await (await fetch(`http://localhost:1458/api/${selectedOption}s/${name}`)).json();
         
+        setActiveRecipe(null);
+        setActiveWorkout(null);
+
         if(selectedOption === 'workout') {
-            for(const d of data) {
-                for(const l of d.workoutSteps) {
-                    l.viewing = false;
-                }
-            }
             setWorkoutData(data);
         } else {
-            for(const d of data) {
-                for(const l of d.recipeSteps) {
-                    l.viewing = false;
-                }
-            }
-
             setRecipeData(data);
         }
 
@@ -79,16 +76,48 @@ function UserProfile({name}) {
 
             <div class="selected-data mx-4 mt-2">
                 <div class="${selectedOption === 'workout' ? '' : 'd-none'}">
+
+                    ${activeWorkout === null ? '' : html`
+                        <div>
+                            <div class="workout mb-2">
+                                <div class="p-1">
+                                    <div class="workout-name d-flex align-items-center justify-content-between">
+                                        <div>${activeWorkout.name}</div>
+                                        <div class="material-symbols-outlined" onclick=${() => setActiveWorkout(null)}>expand_less</div>
+                                    </div>
+                                    <div class="">
+                                        ${
+                                            activeWorkout.workoutSteps.map(w => (
+                                                html`
+                                                    <hr />
+                                                    <div class="workout-step ms-2 mb-2">
+                                                        <div class="step-title d-flex align-items-center justify-content-between">${w.title} 
+                                                            <div class=" d-flex align-items-center">
+                                                                <div class="material-symbols-outlined" style="font-size: 0.95rem;">timer</div> ${w.duration}m
+                                                            </div>
+                                                        </div>
+                                                        <div class="step-description">${w.description}</div>
+                                                    </div>
+                                                `
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                    }
                     ${
                         workoutData.length > 0 ?
                         workoutData.map(d => (
                             html`
-                                <div class="workout mb-2">
+                                <div class="workout mb-2 ${activeWorkout !== null ? 'd-none' : ''}" onclick=${() => setActiveWorkout(d)}>
                                     <div class="p-1">
-                                        <div class="workout-name">${d.name}</div>
+                                        <div class="workout-name d-flex align-items-center justify-content-between">${d.name} <span class="material-symbols-outlined">expand_more</span></div>
                                         <div class="workout-info d-flex align-items-center justify-content-start mt-1">
                                             <div class="pill me-1 px-2 py-1">${capitalizeFirstLetter(d.type)}</div>
                                             <div class="pill px-2 py-1">${d.workoutSteps.length} Steps</div>
+                                            <span class="material-symbols-outlined ms-auto" onclick=${() => handleSearchWorkouts(d.type)} style="color: rgb(195, 195, 195);">search</span>
                                         </div>
                                     </div>
                                 </div>
@@ -112,16 +141,45 @@ function UserProfile({name}) {
 
 
                 <div class="${selectedOption === 'recipe' ? '' : 'd-none'}">
+
+                    ${activeRecipe === null ? '' : html`
+                            <div>
+                                <div class="workout mb-2">
+                                    <div class="p-1">
+                                        <div class="workout-name d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center fw-bold">${activeRecipe.name} <span class="fw-normal ms-2" style="color: rgb(195, 195, 195); font-size: 0.65rem;">(${activeRecipe.calories}) calories</span></div>
+                                            <div class="material-symbols-outlined" onclick=${() => setActiveRecipe(null)}>expand_less</div>
+                                        </div>
+                                        <div class="">
+                                            ${
+                                                activeRecipe.recipeSteps.map(w => (
+                                                    html`
+                                                        <hr />
+                                                        <div class="workout-step ms-2 mb-2">
+                                                            <div class="step-title d-flex align-items-center justify-content-between">${w.title}</div>
+                                                            <div class="step-description">${w.description}</div>
+                                                        </div>
+                                                    `
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        }
+
                     ${
                         recipeData.length > 0 ?
                         recipeData.map(d => (
                             html`
-                                <div class="workout mb-2">
+                                <div class="workout mb-2 ${activeRecipe === null ? '' : 'd-none'}" onclick=${() => setActiveRecipe(d)}>
                                     <div class="p-1">
-                                        <div class="workout-name">${d.name}</div>
+                                        <div class="workout-name d-flex align-items-center justify-content-between">${d.name} <span class="material-symbols-outlined">expand_more</span></div>
                                         <div class="workout-info d-flex align-items-center justify-content-start mt-1">
                                             <div class="pill me-1 px-2 py-1">${d.calories} Calories</div>
                                             <div class="pill px-2 py-1">${d.recipeSteps.length} Steps</div>
+                                            <span class="material-symbols-outlined ms-auto" style="color: rgb(195, 195, 195);">search</span>
                                         </div>
                                     </div>
                                 </div>

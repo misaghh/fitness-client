@@ -130,6 +130,24 @@ body {
             }
         }
     }
+
+    .workout-step {
+        margin-left: 0.1rem;
+        .step-title {
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .step-description {
+            color: rgb(195, 195, 195);
+            font-size: 0.75rem;
+        }
+    }
+}
+
+.search-info {
+    color: white;
+    font-size: 1.2rem;
 }
 
 .title {

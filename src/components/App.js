@@ -4,6 +4,7 @@ import Router from 'preact-router';
 
 import LoginPage from './LoginPage';
 import UserProfile from './UserProfile';
+import SearchPage from './SearchPage';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
             <${Router}>
                 <${LoginPage} path="/" />
                 <${UserProfile} path="/profile/:name" />
+                <${SearchPage} path="/search/:type" />
             </${Router}>         
         </div>
     `
