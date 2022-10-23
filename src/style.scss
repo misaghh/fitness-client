@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+$gray: rgb(29, 29, 29);
+$orange: #2baf4a;
+$light-gray: rgb(65, 65, 65);
+
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: $gray !important;
+}
+
+#root {
+    height: 100%;
+    width: 100%;;
+}
+
+.login-page {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 5rem;
+
+    .sign-in {
+        display: flex;
+        flex-direction: column;
+
+        width: 15rem;
+
+        button, input {
+            width: 100% !important;
+        }
+    }
+}
+
+.user-profile {
+
+    .username {
+        color: white;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .date-joined {
+        font-size: 0.65rem;
+        color: gray;
+        text-align: center;
+    }
+
+    .streak-wrapper {
+
+        background-color: $light-gray;
+        border-radius: 0.25rem;
+
+        .streak {
+
+            .streak-count {
+                font-size: 1rem;
+                color: white;
+                font-weight: bold;
+            }
+            
+            .streak-icon {
+                color: $orange;
+            }
+
+        }
+
+    }
+
+    .user-options {
+
+        .workout-option, .recipe-option {
+            border-radius: 0.25rem;
+            background-color: $light-gray;
+            color: white;
+        }
+
+        .active-option {
+            background-color: $orange !important;
+        }
+    }
+
+    .selected-data {
+
+        .workout {
+
+            border-radius: 0.25rem;
+
+            background-color: $light-gray;
+
+            .workout-name {
+                color: white;
+                text-align: left;
+            }
+
+            .workout-info {
+
+                .pill {
+                    background-color: $gray;
+                    color: white;
+                    border-radius: 0.25rem;
+                    font-size: 0.65rem;
+                }
+            }
+        }
+
+        .new-item {
+            color: $light-gray;
+            transition: color 200ms ease-in;
+
+            &:hover {
+                color: $orange;
+            }
+        }
+    }
+}
+
+.title {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+.label {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.input {
+    background-color: $light-gray;
+    border: none;
+    padding: 0.25rem 0.25rem;
+
+    border-radius: 0.1rem;
+}
+
+hr {
+    color: white !important;
+}
+
+.button-primary {
+    background-color: $orange;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.25rem;
+}
