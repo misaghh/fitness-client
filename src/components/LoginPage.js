@@ -33,9 +33,6 @@ function LoginPage() {
         checkLoginStatus();
     }, []);
 
-    useEffect(() => {
-    }, [user])
-
     return html`
         <div class="login-page">
             <div class="sign-in">

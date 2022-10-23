@@ -11,6 +11,12 @@ function UserProfile({name}) {
     const [selectedOption, setSelectedOption] = useState("workout");
     const [workoutData, setWorkoutData] = useState([]);
     const [recipeData, setRecipeData] = useState([]);
+    const [activeView, setActiveView] = useState([]);
+
+    const handleLogOut = () => {
+        localStorage.removeItem('username');
+        window.location.href = 'http://localhost:1234/'
+    }
 
     useEffect(async () => {
 
@@ -24,12 +30,21 @@ function UserProfile({name}) {
         const data = await (await fetch(`http://localhost:1458/api/${selectedOption}s/${name}`)).json();
         
         if(selectedOption === 'workout') {
+            for(const d of data) {
+                for(const l of d.workoutSteps) {
+                    l.viewing = false;
+                }
+            }
             setWorkoutData(data);
         } else {
+            for(const d of data) {
+                for(const l of d.recipeSteps) {
+                    l.viewing = false;
+                }
+            }
+
             setRecipeData(data);
         }
-
-        console.log(data);
 
     }, [selectedOption])
 
@@ -38,7 +53,7 @@ function UserProfile({name}) {
         ${
             user === null ? html`<div>Loading</div>` :
             html`
-
+            <div class="d-flex justify-content-end label mx-4" onclick=${handleLogOut}><span class="material-symbols-outlined ms-3">logout</span></div>
             <div class="username">${user.username}</div>
             <div class="date-joined">Joined ${new Date(user.date_joined).toDateString()}</div>
             <div class="streak-wrapper w-50 ms-auto me-auto mt-2">
@@ -88,7 +103,7 @@ function UserProfile({name}) {
                         `
                     }
 
-                    <div class="new-item d-flex justify-content-center align-items-center mt-4">
+                    <div class="new-item d-flex justify-content-center align-items-center mt-4 p-1">
                         <div class="material-symbols-outlined">add_circle</div>
                         <div>New Workout</div>
                     </div>
@@ -120,7 +135,7 @@ function UserProfile({name}) {
                         `
                     }
 
-                <div class="new-item d-flex justify-content-center align-items-center mt-4">
+                <div class="new-item d-flex justify-content-center align-items-center mt-4 p-1">
                     <div class="material-symbols-outlined">add_circle</div>
                     <div>New Recipe</div>
                 </div>

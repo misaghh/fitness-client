@@ -120,10 +120,13 @@ body {
 
         .new-item {
             color: $light-gray;
-            transition: color 200ms ease-in;
+            transition: color 200ms ease-in, border 200ms ease-in;
+            border: 1px solid $light-gray;
+            border-radius: 0.25rem;;
 
             &:hover {
                 color: $orange;
+                border: 1px solid $orange;
             }
         }
     }
@@ -136,7 +139,7 @@ body {
 }
 
 .label {
-    color: white;
+    color: rgb(155, 155, 155);
     font-size: 1.2rem;
 }
 
